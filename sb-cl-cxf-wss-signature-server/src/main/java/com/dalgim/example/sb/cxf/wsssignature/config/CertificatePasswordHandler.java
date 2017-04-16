@@ -1,6 +1,7 @@
-package com.dalgim.example.sb.cxf.cxfwsssignature.config;
+package com.dalgim.example.sb.cxf.wsssignature.config;
 
 import org.apache.wss4j.common.ext.WSPasswordCallback;
+
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
@@ -14,7 +15,7 @@ public class CertificatePasswordHandler implements CallbackHandler {
     public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
         WSPasswordCallback pc = (WSPasswordCallback) callbacks[0];
 
-        if (pc.getIdentifier().equals("clientkey")) {
+        if (pc.getIdentifier().equals("serverkey")) {
             pc.setPassword("password");
         }
     }

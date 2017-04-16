@@ -1,20 +1,18 @@
-package com.dalgim.example.sb.cxf.config;
+package com.dalgim.example.sb.cxf.wsssignature.config;
 
-import com.dalgim.example.sb.cxf.endpoint.FruitService;
-import com.dalgim.example.sb.cxf.endpoint.FruitServiceImpl;
+import com.dalgim.example.sb.cxf.wsssignature.endpoint.FruitService;
 import com.google.common.collect.Maps;
-import org.apache.cxf.Bus;
-import org.apache.cxf.bus.spring.SpringBus;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.endpoint.Endpoint;
+import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
-import org.apache.cxf.jaxws.EndpointImpl;
-import org.apache.cxf.transport.servlet.CXFServlet;
+import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import javax.xml.ws.Endpoint;
 import java.util.Map;
 
 import static org.apache.wss4j.common.ConfigurationConstants.ACTION;
@@ -26,46 +24,32 @@ import static org.apache.wss4j.common.ConfigurationConstants.SIG_PROP_FILE;
 import static org.apache.wss4j.common.ConfigurationConstants.USER;
 
 /**
- * Created by dalgim on 08.04.2017.
+ * Created by dalgim on 09.04.2017.
  */
 @Configuration
-public class WebServiceConfig {
-
-    private static final String SERVLET_URL_PATH = "/api";
-    private static final String SERVICE_URL_PATH = "/FruitService";
+public class WebConsumerConfig {
 
     @Bean
-    public ServletRegistrationBean cxfServlet() {
-        return new ServletRegistrationBean(new CXFServlet(), SERVLET_URL_PATH + "/*");
-    }
-
-    @Bean(name = Bus.DEFAULT_BUS_ID)
-    public SpringBus springBus() {
-        return new SpringBus();
-    }
-
-    @Bean
-    public FruitService fruitService() {
-        return new FruitServiceImpl();
-    }
-
-    @Bean
-    public Endpoint endpoint() {
-        EndpointImpl endpoint = new EndpointImpl(springBus(), fruitService());
-        endpoint.publish(SERVICE_URL_PATH);
-        endpoint.getInInterceptors().add(wss4JInInterceptor());
+    public FruitService jaxWsProxyFactoryBean(@Value("${fruitService.address}") String address) {
+        JaxWsProxyFactoryBean jaxWsProxyFactoryBean = new JaxWsProxyFactoryBean();
+        jaxWsProxyFactoryBean.setServiceClass(FruitService.class);
+        jaxWsProxyFactoryBean.setAddress(address);
+        FruitService fruitService = (FruitService) jaxWsProxyFactoryBean.create();
+        Client client = ClientProxy.getClient(fruitService);
+        Endpoint endpoint = client.getEndpoint();
         endpoint.getInInterceptors().add(loggingInInterceptor());
+        endpoint.getInInterceptors().add(wss4JInInterceptor());
         endpoint.getOutInterceptors().add(loggingOutInterceptor());
         endpoint.getOutInterceptors().add(wss4JOutInterceptor());
-        return endpoint;
+        return fruitService;
     }
 
     private WSS4JOutInterceptor wss4JOutInterceptor() {
         Map<String, Object> securityProperties = Maps.newHashMap();
         securityProperties.put(ACTION, "Signature");
         securityProperties.put(PASSWORD_TYPE, "PasswordDigest");
-        securityProperties.put(SIG_PROP_FILE, "server_wss.properties");
-        securityProperties.put(USER, "serverkey");
+        securityProperties.put(SIG_PROP_FILE, "client_wss.properties");
+        securityProperties.put(USER, "clientkey");
         securityProperties.put(SIG_KEY_ID, "DirectReference");
         securityProperties.put(MUST_UNDERSTAND, "true");
         securityProperties.put(PW_CALLBACK_CLASS, CertificatePasswordHandler.class.getName());
@@ -75,7 +59,7 @@ public class WebServiceConfig {
     private WSS4JInInterceptor wss4JInInterceptor() {
         Map<String, Object> properties = Maps.newHashMap();
         properties.put(ACTION, "Signature");
-        properties.put(SIG_PROP_FILE, "server_wss.properties");
+        properties.put(SIG_PROP_FILE, "client_wss.properties");
         return new WSS4JInInterceptor(properties);
     }
 
@@ -90,5 +74,4 @@ public class WebServiceConfig {
         loggingOutInterceptor.setPrettyLogging(true);
         return loggingOutInterceptor;
     }
-
 }

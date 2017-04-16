@@ -1,4 +1,4 @@
-package com.dalgim.example.sb.cxf;
+package com.dalgim.example.sb.cxf.wsssignature;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

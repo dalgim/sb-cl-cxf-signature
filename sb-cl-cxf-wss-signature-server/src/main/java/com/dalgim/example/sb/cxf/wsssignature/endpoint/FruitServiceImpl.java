@@ -1,6 +1,6 @@
-package com.dalgim.example.sb.cxf.endpoint;
+package com.dalgim.example.sb.cxf.wsssignature.endpoint;
 
-import com.dalgim.example.sb.cxf.model.Fruit;
+import com.dalgim.example.sb.cxf.wsssignature.model.Fruit;
 import org.springframework.stereotype.Service;
 import javax.jws.WebService;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.List;
  * Created by dalgim on 08.04.2017.
  */
 @Service
-@WebService(endpointInterface = "com.dalgim.example.sb.cxf.endpoint.FruitService")
+@WebService(endpointInterface = "com.dalgim.example.sb.cxf.wsssignature.endpoint.FruitService")
 public class FruitServiceImpl implements FruitService {
 
     private static List<Fruit> fruitList = new ArrayList<>(2);

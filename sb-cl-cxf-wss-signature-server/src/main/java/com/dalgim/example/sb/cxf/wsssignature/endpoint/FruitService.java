@@ -1,6 +1,6 @@
-package com.dalgim.example.sb.cxf.endpoint;
+package com.dalgim.example.sb.cxf.wsssignature.endpoint;
 
-import com.dalgim.example.sb.cxf.model.Fruit;
+import com.dalgim.example.sb.cxf.wsssignature.model.Fruit;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import java.util.Collection;

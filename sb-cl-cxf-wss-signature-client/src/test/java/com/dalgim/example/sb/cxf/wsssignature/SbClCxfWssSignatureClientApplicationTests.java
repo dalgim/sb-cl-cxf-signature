@@ -1,6 +1,6 @@
-package com.dalgim.example.sb.cxf.cxfwsssignature;
+package com.dalgim.example.sb.cxf.wsssignature;
 
-import com.dalgim.example.sb.cxf.cxfwsssignature.endpoint.FruitService;
+import com.dalgim.example.sb.cxf.wsssignature.endpoint.FruitService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

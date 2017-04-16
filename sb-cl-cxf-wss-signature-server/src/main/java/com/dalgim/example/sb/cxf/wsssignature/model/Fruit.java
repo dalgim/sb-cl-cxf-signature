@@ -1,4 +1,4 @@
-package com.dalgim.example.sb.cxf.model;
+package com.dalgim.example.sb.cxf.wsssignature.model;
 
 import lombok.Builder;
 import lombok.Getter;
