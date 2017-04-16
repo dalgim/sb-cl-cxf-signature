@@ -71,9 +71,10 @@
 				<version>2.4.1</version>
 				<configuration>
 					<wsdlUrls>
-						<wsdlUrl>src/main/resources/wsdl/FruitService.wsdl</wsdlUrl>
+						<!--<wsdlUrl>src/main/resources/wsdl/FruitCatalog.wsdl</wsdlUrl>-->
+						<wsdlUrl>C:/Moje pliki/Projekty/InteliiJ Ultimate/sb-cl-cxf-signature/sb-cl-cxf-wss-signature-server/target/generated/wsdl/FruitCatalog.wsdl</wsdlUrl>
 					</wsdlUrls>
-					<sourceDestDir>target/generated-sources/FruitService</sourceDestDir>
+					<sourceDestDir>target/generated-sources/FruitCatalog</sourceDestDir>
 					<vmArgs>
 						<vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
 					</vmArgs>
@@ -98,7 +99,7 @@
 						</goals>
 						<configuration>
 							<sources>
-								<source>target/generated-sources/FruitService</source>
+								<source>target/generated-sources/FruitCatalog</source>
 							</sources>
 						</configuration>
 					</execution>

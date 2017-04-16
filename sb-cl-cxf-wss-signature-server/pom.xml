@@ -79,7 +79,7 @@
 						<id>process-classes</id>
 						<phase>process-classes</phase>
 						<configuration>
-							<className>com.dalgim.example.sb.cxf.wsssignature.endpoint.FruitService</className>
+							<className>com.dalgim.example.sb.cxf.wsssignature.endpoint.FruitCatalog</className>
 							<genWsdl>true</genWsdl>
 							<verbose>true</verbose>
 						</configuration>

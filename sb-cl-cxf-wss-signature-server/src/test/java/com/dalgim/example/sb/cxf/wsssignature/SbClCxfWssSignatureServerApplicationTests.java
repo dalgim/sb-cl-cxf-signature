@@ -11,6 +11,7 @@ public class SbClCxfWssSignatureServerApplicationTests {
 
 	@Test
 	public void contextLoads() {
+		assert true;
 	}
 
 }

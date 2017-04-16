@@ -1,6 +1,6 @@
 package com.dalgim.example.sb.cxf.wsssignature.config;
 
-import com.dalgim.example.sb.cxf.wsssignature.endpoint.FruitService;
+import com.dalgim.example.sb.cxf.wsssignature.endpoint.FruitCatalog;
 import com.google.common.collect.Maps;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.endpoint.Endpoint;
@@ -30,25 +30,25 @@ import static org.apache.wss4j.common.ConfigurationConstants.USER;
 public class WebConsumerConfig {
 
     @Bean
-    public FruitService jaxWsProxyFactoryBean(@Value("${fruitService.address}") String address) {
+    public FruitCatalog jaxWsProxyFactoryBean(@Value("${fruitService.address}") String address) {
         JaxWsProxyFactoryBean jaxWsProxyFactoryBean = new JaxWsProxyFactoryBean();
-        jaxWsProxyFactoryBean.setServiceClass(FruitService.class);
+        jaxWsProxyFactoryBean.setServiceClass(FruitCatalog.class);
         jaxWsProxyFactoryBean.setAddress(address);
-        FruitService fruitService = (FruitService) jaxWsProxyFactoryBean.create();
-        Client client = ClientProxy.getClient(fruitService);
+        FruitCatalog fruitCatalog = (FruitCatalog) jaxWsProxyFactoryBean.create();
+        Client client = ClientProxy.getClient(fruitCatalog);
         Endpoint endpoint = client.getEndpoint();
         endpoint.getInInterceptors().add(loggingInInterceptor());
         endpoint.getInInterceptors().add(wss4JInInterceptor());
         endpoint.getOutInterceptors().add(loggingOutInterceptor());
         endpoint.getOutInterceptors().add(wss4JOutInterceptor());
-        return fruitService;
+        return fruitCatalog;
     }
 
     private WSS4JOutInterceptor wss4JOutInterceptor() {
         Map<String, Object> securityProperties = Maps.newHashMap();
         securityProperties.put(ACTION, "Signature");
         securityProperties.put(PASSWORD_TYPE, "PasswordDigest");
-        securityProperties.put(SIG_PROP_FILE, "client_wss.properties");
+        securityProperties.put(SIG_PROP_FILE, "client_signature.properties");
         securityProperties.put(USER, "clientkey");
         securityProperties.put(SIG_KEY_ID, "DirectReference");
         securityProperties.put(MUST_UNDERSTAND, "true");
@@ -59,7 +59,7 @@ public class WebConsumerConfig {
     private WSS4JInInterceptor wss4JInInterceptor() {
         Map<String, Object> properties = Maps.newHashMap();
         properties.put(ACTION, "Signature");
-        properties.put(SIG_PROP_FILE, "client_wss.properties");
+        properties.put(SIG_PROP_FILE, "client_signature.properties");
         return new WSS4JInInterceptor(properties);
     }
 

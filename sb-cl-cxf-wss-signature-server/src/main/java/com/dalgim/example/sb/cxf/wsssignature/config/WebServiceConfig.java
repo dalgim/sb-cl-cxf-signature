@@ -1,7 +1,7 @@
 package com.dalgim.example.sb.cxf.wsssignature.config;
 
-import com.dalgim.example.sb.cxf.wsssignature.endpoint.FruitService;
-import com.dalgim.example.sb.cxf.wsssignature.endpoint.FruitServiceImpl;
+import com.dalgim.example.sb.cxf.wsssignature.endpoint.FruitCatalog;
+import com.dalgim.example.sb.cxf.wsssignature.endpoint.FruitCatalogImpl;
 import com.google.common.collect.Maps;
 import org.apache.cxf.Bus;
 import org.apache.cxf.bus.spring.SpringBus;
@@ -32,7 +32,7 @@ import static org.apache.wss4j.common.ConfigurationConstants.USER;
 public class WebServiceConfig {
 
     private static final String SERVLET_URL_PATH = "/api";
-    private static final String SERVICE_URL_PATH = "/FruitService";
+    private static final String SERVICE_URL_PATH = "/FruitCatalog";
 
     @Bean
     public ServletRegistrationBean cxfServlet() {
@@ -45,8 +45,8 @@ public class WebServiceConfig {
     }
 
     @Bean
-    public FruitService fruitService() {
-        return new FruitServiceImpl();
+    public FruitCatalog fruitService() {
+        return new FruitCatalogImpl();
     }
 
     @Bean
@@ -64,7 +64,7 @@ public class WebServiceConfig {
         Map<String, Object> securityProperties = Maps.newHashMap();
         securityProperties.put(ACTION, "Signature");
         securityProperties.put(PASSWORD_TYPE, "PasswordDigest");
-        securityProperties.put(SIG_PROP_FILE, "server_wss.properties");
+        securityProperties.put(SIG_PROP_FILE, "server_signature.properties");
         securityProperties.put(USER, "serverkey");
         securityProperties.put(SIG_KEY_ID, "DirectReference");
         securityProperties.put(MUST_UNDERSTAND, "true");
@@ -75,7 +75,7 @@ public class WebServiceConfig {
     private WSS4JInInterceptor wss4JInInterceptor() {
         Map<String, Object> properties = Maps.newHashMap();
         properties.put(ACTION, "Signature");
-        properties.put(SIG_PROP_FILE, "server_wss.properties");
+        properties.put(SIG_PROP_FILE, "server_signature.properties");
         return new WSS4JInInterceptor(properties);
     }
 
