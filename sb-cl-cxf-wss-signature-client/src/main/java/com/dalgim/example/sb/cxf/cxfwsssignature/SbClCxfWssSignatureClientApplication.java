@@ -1,4 +1,4 @@
-package com.dalgim.example.sb.cxf;
+package com.dalgim.example.sb.cxf.cxfwsssignature;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
