@@ -16,6 +16,8 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Map;
 
 import static org.apache.wss4j.common.ConfigurationConstants.ACTION;
+import static org.apache.wss4j.common.ConfigurationConstants.ENCRYPTION_USER;
+import static org.apache.wss4j.common.ConfigurationConstants.ENC_PROP_FILE;
 import static org.apache.wss4j.common.ConfigurationConstants.MUST_UNDERSTAND;
 import static org.apache.wss4j.common.ConfigurationConstants.PASSWORD_TYPE;
 import static org.apache.wss4j.common.ConfigurationConstants.PW_CALLBACK_CLASS;
@@ -43,7 +45,7 @@ public class WebConsumerConfig {
         endpoint.getOutInterceptors().add(wss4JOutInterceptor());
         return fruitCatalog;
     }
-
+    //http://web-gmazza.rhcloud.com/blog/entry/cxf-x509-profile
     private WSS4JOutInterceptor wss4JOutInterceptor() {
         Map<String, Object> securityProperties = Maps.newHashMap();
         securityProperties.put(ACTION, "Signature");

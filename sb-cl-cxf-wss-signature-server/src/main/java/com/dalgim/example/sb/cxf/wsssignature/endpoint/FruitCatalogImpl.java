@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicLong;
         serviceName = "FruitCatalogService", targetNamespace = "http://endpoint.fruitcatalog.dalgim.com")
 public class FruitCatalogImpl implements FruitCatalog {
 
-    private static List<Fruit> fruitList = new ArrayList<>(2);
+    private static List<Fruit> fruitList = new ArrayList<>();
     private static AtomicLong atomicLong = new AtomicLong();
 
     static {
