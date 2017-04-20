@@ -15,14 +15,13 @@ More helpful info you can find on this websites:
 * Advanced User Guide JBoss Community - [Link](https://docs.jboss.org/author/display/JBWS/Advanced+User+Guide)
 
 
-### Configuration
-#### Signature basic parameters
+### Signature basic parameters
 Below parameters are using in client and server configuration to get wss signature connection
-<br/><b>ACTION</b> - One on supported security actions (e.g. Encrypt, Signature, UsernameToken, Timestamp), in our case it's SIGNATURE 
+<br/><b>ACTION</b> - One on supported security actions (e.g. Encrypt, Signature, UsernameToken, Timestamp)
 <br/><b>SIG_PROP_FILE</b> - File keystore and trusstore configruation (location, password, procider)
 <br/><b>USER</b> - Alias of server/client key which will be use for signing request/response
 <br/><b>MUST_UNDERSTAND</b> - True if client/server must process ws security actions otherwise false
-<br/><b>PW_CALLBACK_CLASS</b> - Name of PasswordCallback interface implementation which provides password for client/server key alias 
+<br/><b>PW_CALLBACK_CLASS</b> - Name of PasswordCallback interface implementation which provides password for client/server key 
 
 ### Creating server and client keys
 

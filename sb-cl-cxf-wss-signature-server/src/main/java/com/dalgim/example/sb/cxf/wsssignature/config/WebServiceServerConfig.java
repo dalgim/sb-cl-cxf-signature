@@ -1,18 +1,20 @@
 package com.dalgim.example.sb.cxf.wsssignature.config;
 
 import com.dalgim.example.sb.cxf.wsssignature.endpoint.FruitCatalog;
+import com.dalgim.example.sb.cxf.wsssignature.endpoint.FruitCatalogImpl;
 import com.google.common.collect.Maps;
-import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.endpoint.Endpoint;
-import org.apache.cxf.frontend.ClientProxy;
+import org.apache.cxf.Bus;
+import org.apache.cxf.bus.spring.SpringBus;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
-import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.apache.cxf.jaxws.EndpointImpl;
+import org.apache.cxf.transport.servlet.CXFServlet;
 import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import javax.xml.ws.Endpoint;
 import java.util.Map;
 
 import static org.apache.wss4j.common.ConfigurationConstants.ACTION;
@@ -22,31 +24,45 @@ import static org.apache.wss4j.common.ConfigurationConstants.SIG_PROP_FILE;
 import static org.apache.wss4j.common.ConfigurationConstants.USER;
 
 /**
- * Created by dalgim on 09.04.2017.
+ * Created by dalgim on 08.04.2017.
  */
 @Configuration
-public class WebConsumerConfig {
+public class WebServiceServerConfig {
+
+    private static final String SERVLET_URL_PATH = "/api";
+    private static final String SERVICE_URL_PATH = "/FruitCatalog";
 
     @Bean
-    public FruitCatalog jaxWsProxyFactoryBean(@Value("${fruitService.address}") String address) {
-        JaxWsProxyFactoryBean jaxWsProxyFactoryBean = new JaxWsProxyFactoryBean();
-        jaxWsProxyFactoryBean.setServiceClass(FruitCatalog.class);
-        jaxWsProxyFactoryBean.setAddress(address);
-        FruitCatalog fruitCatalog = (FruitCatalog) jaxWsProxyFactoryBean.create();
-        Client client = ClientProxy.getClient(fruitCatalog);
-        Endpoint endpoint = client.getEndpoint();
-        endpoint.getInInterceptors().add(loggingInInterceptor());
+    public ServletRegistrationBean cxfServlet() {
+        return new ServletRegistrationBean(new CXFServlet(), SERVLET_URL_PATH + "/*");
+    }
+
+    @Bean(name = Bus.DEFAULT_BUS_ID)
+    public SpringBus springBus() {
+        return new SpringBus();
+    }
+
+    @Bean
+    public FruitCatalog fruitService() {
+        return new FruitCatalogImpl();
+    }
+
+    @Bean
+    public Endpoint endpoint() {
+        EndpointImpl endpoint = new EndpointImpl(springBus(), fruitService());
+        endpoint.publish(SERVICE_URL_PATH);
         endpoint.getInInterceptors().add(wss4JInInterceptor());
+        endpoint.getInInterceptors().add(loggingInInterceptor());
         endpoint.getOutInterceptors().add(loggingOutInterceptor());
         endpoint.getOutInterceptors().add(wss4JOutInterceptor());
-        return fruitCatalog;
+        return endpoint;
     }
 
     private WSS4JOutInterceptor wss4JOutInterceptor() {
         Map<String, Object> securityProperties = Maps.newHashMap();
         securityProperties.put(ACTION, "Signature");
-        securityProperties.put(SIG_PROP_FILE, "client_signature.properties");
-        securityProperties.put(USER, "clientkey");
+        securityProperties.put(SIG_PROP_FILE, "server_signature.properties");
+        securityProperties.put(USER, "serverkey");
         securityProperties.put(MUST_UNDERSTAND, "true");
         securityProperties.put(PW_CALLBACK_CLASS, CertificatePasswordHandler.class.getName());
         return new WSS4JOutInterceptor(securityProperties);
@@ -55,7 +71,7 @@ public class WebConsumerConfig {
     private WSS4JInInterceptor wss4JInInterceptor() {
         Map<String, Object> properties = Maps.newHashMap();
         properties.put(ACTION, "Signature");
-        properties.put(SIG_PROP_FILE, "client_signature.properties");
+        properties.put(SIG_PROP_FILE, "server_signature.properties");
         return new WSS4JInInterceptor(properties);
     }
 
@@ -70,4 +86,5 @@ public class WebConsumerConfig {
         loggingOutInterceptor.setPrettyLogging(true);
         return loggingOutInterceptor;
     }
+
 }
