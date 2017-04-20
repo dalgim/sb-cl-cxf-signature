@@ -19,9 +19,7 @@ import java.util.Map;
 
 import static org.apache.wss4j.common.ConfigurationConstants.ACTION;
 import static org.apache.wss4j.common.ConfigurationConstants.MUST_UNDERSTAND;
-import static org.apache.wss4j.common.ConfigurationConstants.PASSWORD_TYPE;
 import static org.apache.wss4j.common.ConfigurationConstants.PW_CALLBACK_CLASS;
-import static org.apache.wss4j.common.ConfigurationConstants.SIG_KEY_ID;
 import static org.apache.wss4j.common.ConfigurationConstants.SIG_PROP_FILE;
 import static org.apache.wss4j.common.ConfigurationConstants.USER;
 
@@ -63,10 +61,8 @@ public class WebServiceConfig {
     private WSS4JOutInterceptor wss4JOutInterceptor() {
         Map<String, Object> securityProperties = Maps.newHashMap();
         securityProperties.put(ACTION, "Signature");
-        securityProperties.put(PASSWORD_TYPE, "PasswordDigest");
         securityProperties.put(SIG_PROP_FILE, "server_signature.properties");
         securityProperties.put(USER, "serverkey");
-        securityProperties.put(SIG_KEY_ID, "DirectReference");
         securityProperties.put(MUST_UNDERSTAND, "true");
         securityProperties.put(PW_CALLBACK_CLASS, CertificatePasswordHandler.class.getName());
         return new WSS4JOutInterceptor(securityProperties);

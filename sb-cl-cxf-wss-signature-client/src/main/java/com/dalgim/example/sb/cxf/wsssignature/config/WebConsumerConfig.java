@@ -16,12 +16,8 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Map;
 
 import static org.apache.wss4j.common.ConfigurationConstants.ACTION;
-import static org.apache.wss4j.common.ConfigurationConstants.ENCRYPTION_USER;
-import static org.apache.wss4j.common.ConfigurationConstants.ENC_PROP_FILE;
 import static org.apache.wss4j.common.ConfigurationConstants.MUST_UNDERSTAND;
-import static org.apache.wss4j.common.ConfigurationConstants.PASSWORD_TYPE;
 import static org.apache.wss4j.common.ConfigurationConstants.PW_CALLBACK_CLASS;
-import static org.apache.wss4j.common.ConfigurationConstants.SIG_KEY_ID;
 import static org.apache.wss4j.common.ConfigurationConstants.SIG_PROP_FILE;
 import static org.apache.wss4j.common.ConfigurationConstants.USER;
 
@@ -45,14 +41,12 @@ public class WebConsumerConfig {
         endpoint.getOutInterceptors().add(wss4JOutInterceptor());
         return fruitCatalog;
     }
-    //http://web-gmazza.rhcloud.com/blog/entry/cxf-x509-profile
+
     private WSS4JOutInterceptor wss4JOutInterceptor() {
         Map<String, Object> securityProperties = Maps.newHashMap();
         securityProperties.put(ACTION, "Signature");
-        securityProperties.put(PASSWORD_TYPE, "PasswordDigest");
         securityProperties.put(SIG_PROP_FILE, "client_signature.properties");
         securityProperties.put(USER, "clientkey");
-        securityProperties.put(SIG_KEY_ID, "DirectReference");
         securityProperties.put(MUST_UNDERSTAND, "true");
         securityProperties.put(PW_CALLBACK_CLASS, CertificatePasswordHandler.class.getName());
         return new WSS4JOutInterceptor(securityProperties);
