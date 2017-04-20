@@ -1,12 +1,11 @@
 # SpringBoot, Contract Last, CXF Client & Server with WSS Signature
 
-###About
+### About
 
 This projects demonstrates how to configure ws security signature with Apache CXF on client and server side. Both projects providing support
 for wss signature to incoming and outgoing request.
 
 * [sb-cl-cxf-signature-server](https://github.com/dalgim/sb-cl-cxf-signature/tree/master/sb-cl-cxf-wss-signature-server) - Server side
-<br/>
 * [sb-cl-cxf-signature-client](https://github.com/dalgim/sb-cl-cxf-signature/tree/master/sb-cl-cxf-wss-signature-client) - Client side
 
 More helpful info you can find on this websites:
@@ -19,7 +18,6 @@ More helpful info you can find on this websites:
 ### Configuration
 #### Signature basic parameters
 Below parameters are using in client and server configuration to get wss signature connection
-
 <br/><b>ACTION</b> - One on supported security actions (e.g. Encrypt, Signature, UsernameToken, Timestamp), in our case it's SIGNATURE 
 <br/><b>SIG_PROP_FILE</b> - File keystore and trusstore configruation (location, password, procider)
 <br/><b>USER</b> - Alias of server/client key which will be use for signing request/response

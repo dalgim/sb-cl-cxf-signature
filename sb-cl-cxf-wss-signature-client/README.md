@@ -1,1 +1,1 @@
-# sb-cl-cxf-ws-ssl-p12-consumer
+# sb-cl-cxf-ws-signature-client

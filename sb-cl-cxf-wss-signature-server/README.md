@@ -1,1 +1,1 @@
-# sb-cl-cxf-ws-ssl-p12-producer
+# sb-cl-cxf-ws-signature-server
